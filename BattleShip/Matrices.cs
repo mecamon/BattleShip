@@ -12,7 +12,7 @@ namespace BattleShip
 
 
         //Enum para saber cuanto se le agrega de posiciones a los barcos
-        public enum agregadoABarcos 
+        public enum agregadoABarcos
         {
             BARCOS_DE_DOS = 1,
             BARCOS_DE_TRES = 2,
@@ -20,7 +20,15 @@ namespace BattleShip
             BARCOS_DE_CINCO = 4,
         }
 
-        public static void menu() 
+        public enum capacidadBarcos
+        {
+            CAPACIDAD_BARCO2 = 2,
+            CAPACIDAD_BARCO3,
+            CAPACIDAD_BARCO4,
+            CAPACIDAD_BARCO5,
+        }
+
+        public static void menu()
         {
             Console.WriteLine("Bienvenido a BattleShip. Que funcion desea realizar: \n");
             Console.WriteLine(" 1- Iniciar el juego\n 2- Mostrar record");
@@ -28,7 +36,7 @@ namespace BattleShip
             {
                 int opcion = Convert.ToInt32(Console.ReadLine());
 
-                switch (opcion) 
+                switch (opcion)
                 {
                     case 1:
                         iniciandoJugador1();
@@ -101,7 +109,7 @@ namespace BattleShip
 
             Console.WriteLine("\n");
         }
-        public static void iniciandoJugador1() 
+        public static void iniciandoJugador1()
         {
             Jugador1 = inicioDelJuego("Jugador 1");
         }
@@ -120,11 +128,21 @@ namespace BattleShip
                 try
                 {
                     jugador.nombre = Console.ReadLine();
+
                 }
                 catch (Exception exp)
                 {
                     Console.WriteLine(exp.Message);
                 }
+
+                jugador.barco2 = new string[2];
+                jugador.barco3 = new string[3];
+                jugador.barco3[0] = "0"; jugador.barco3[1] = "0"; jugador.barco3[2] = "0";
+                jugador.barco3_2 = new string[3];
+                jugador.barco3_2[0] = "0"; jugador.barco3[1] = "0"; jugador.barco3[2] = "0";
+                jugador.barco4 = new string[4];
+                jugador.barco5 = new string[5];
+
                 jugador.tablero = asignarTablero();
                 jugador.tableroVacio = asignarTablero();
 
@@ -149,7 +167,7 @@ namespace BattleShip
                 Console.Write("Donde desea posicionar del barco: ");
                 string barco2 = Console.ReadLine();
 
-                
+
                 int pos_i = 0;
                 int pos_j = 0;
 
@@ -169,30 +187,33 @@ namespace BattleShip
                 switch (contador)
                 {
                     case 1:
-                        orientacionBarco(jugador, pos_i, pos_j, 2, 1, 8, (int)agregadoABarcos.BARCOS_DE_DOS);
+                        orientacionBarco(jugador, pos_i, pos_j, (int)capacidadBarcos.CAPACIDAD_BARCO2, 1, 8, (int)agregadoABarcos.BARCOS_DE_DOS);
                         break;
 
                     case 2:
-                        orientacionBarco(jugador, pos_i, pos_j, 3, 2, 7, (int)agregadoABarcos.BARCOS_DE_TRES);
+                        orientacionBarco(jugador, pos_i, pos_j, (int)capacidadBarcos.CAPACIDAD_BARCO3, 2, 7, (int)agregadoABarcos.BARCOS_DE_TRES);
                         break;
 
                     case 3:
-                        orientacionBarco(jugador, pos_i, pos_j, 3, 2, 7, (int)agregadoABarcos.BARCOS_DE_TRES);
+                        orientacionBarco(jugador, pos_i, pos_j, (int)capacidadBarcos.CAPACIDAD_BARCO3, 2, 7, (int)agregadoABarcos.BARCOS_DE_TRES);
                         break;
 
                     case 4:
-                        orientacionBarco(jugador, pos_i, pos_j, 4, 3, 6, (int)agregadoABarcos.BARCOS_DE_CUATRO);
+                        orientacionBarco(jugador, pos_i, pos_j, (int)capacidadBarcos.CAPACIDAD_BARCO4, 3, 6, (int)agregadoABarcos.BARCOS_DE_CUATRO);
                         break;
 
                     case 5:
-                        orientacionBarco(jugador, pos_i, pos_j, 5, 4, 5, (int)agregadoABarcos.BARCOS_DE_CINCO);
+                        orientacionBarco(jugador, pos_i, pos_j, (int)capacidadBarcos.CAPACIDAD_BARCO5, 4, 5, (int)agregadoABarcos.BARCOS_DE_CINCO);
                         break;
                 }
                 contador++;
                 Console.Clear();
             }
 
+            imprimirTodosLosBarcos(jugador);
+
             imprimirCampo(jugador);
+
             Console.ReadKey();
         }
         public static void orientacionBarco(Jugadores jugador, int i, int j, int capacidadBarco, int arriba_izquierda, int abajo_derecha, int aSumar)
@@ -265,11 +286,16 @@ namespace BattleShip
             }
             else
             {
+                int contador = 1;
+
+                llenadoDeBarcos1(capacidadBarco, i, j, jugador);
+
                 jugador.tablero[i, j] = " X";
-                //jugador.tablero[i - aSumar, j] = " X";
-                
-                for (int a = i - aSumar; a < i; a++) 
+
+                for (int a = i - aSumar; a < i; a++)
                 {
+                    llenadoDeBarcos2(ref contador, capacidadBarco, a, j, jugador);
+
                     jugador.tablero[a, j] = " X";
                 }
             }
@@ -304,10 +330,17 @@ namespace BattleShip
             }
             else
             {
+                int contador = 1;
+
+                llenadoDeBarcos1(capacidadBarco, i, j, jugador);
+
                 jugador.tablero[i, j] = " X";
+
 
                 for (int a = i + aSumar; a > i; a--)
                 {
+                    llenadoDeBarcos2(ref contador, capacidadBarco, a, j, jugador);
+
                     jugador.tablero[a, j] = " X";
                 }
             }
@@ -342,10 +375,16 @@ namespace BattleShip
             }
             else
             {
+                int contador = 1;
+
+                llenadoDeBarcos1(capacidadBarco, i, j, jugador);
+
                 jugador.tablero[i, j] = " X";
 
                 for (int a = j + aSumar; a > j; a--)
                 {
+                    llenadoDeBarcos2(ref contador, capacidadBarco, a, j, jugador);
+
                     jugador.tablero[i, a] = " X";
                 }
             }
@@ -380,15 +419,21 @@ namespace BattleShip
             }
             else
             {
+                int contador = 1;
+
+                llenadoDeBarcos1(capacidadBarco, i, j, jugador);
+
                 jugador.tablero[i, j] = " X";
 
                 for (int a = j - aSumar; a < j; a++)
                 {
+                    llenadoDeBarcos2(ref contador, capacidadBarco, a, j, jugador);
+
                     jugador.tablero[i, a] = " X";
                 }
             }
         }
-        public static void imprimirTableroVacio(string[,] tablero) 
+        public static void imprimirTableroVacio(string[,] tablero)
         {
             int contador = 0;
 
@@ -408,6 +453,94 @@ namespace BattleShip
             }
 
             Console.WriteLine("\n");
+        }
+        public static void llenadoDeBarcos1(int capacidadBarco, int a, int j_or_i, Jugadores jugador)
+        {
+            if (capacidadBarco == (int)capacidadBarcos.CAPACIDAD_BARCO2)
+            {
+                jugador.barco2[0] = jugador.tablero[a, j_or_i];
+            }
+            else if (capacidadBarco == (int)capacidadBarcos.CAPACIDAD_BARCO3)
+            {
+                if (jugador.barco3[0] == "0")
+                {
+                    jugador.barco3[0] = jugador.tablero[a, j_or_i];
+                }
+                else 
+                {
+                    jugador.barco3_2[0] = jugador.tablero[a, j_or_i];
+                }
+            }
+            else if (capacidadBarco == (int)capacidadBarcos.CAPACIDAD_BARCO4)
+            {
+                jugador.barco4[0] = jugador.tablero[a, j_or_i];
+            }
+            else if (capacidadBarco == (int)capacidadBarcos.CAPACIDAD_BARCO5)
+            {
+                jugador.barco5[0] = jugador.tablero[a, j_or_i];
+            }
+        }
+        public static void llenadoDeBarcos2(ref int contador, int capacidadBarco, int a, int j_or_i, Jugadores jugador)
+        {
+            if (capacidadBarco == (int)capacidadBarcos.CAPACIDAD_BARCO2)
+            {
+                jugador.barco2[contador] = jugador.tablero[a, j_or_i];
+                contador++;
+            }
+            else if (capacidadBarco == (int)capacidadBarcos.CAPACIDAD_BARCO3)
+            {
+
+                if (jugador.barco3[2] == "0")
+                {
+                    jugador.barco3[contador] = jugador.tablero[a, j_or_i];
+                    contador++;
+                }
+                else 
+                {
+                    jugador.barco3_2[contador] = jugador.tablero[a, j_or_i];
+                    contador++;
+                }
+
+            }
+            else if (capacidadBarco == (int)capacidadBarcos.CAPACIDAD_BARCO4)
+            {
+                jugador.barco4[contador] = jugador.tablero[a, j_or_i];
+                contador++;
+            }
+            else if (capacidadBarco == (int)capacidadBarcos.CAPACIDAD_BARCO5)
+            {
+                jugador.barco5[contador] = jugador.tablero[a, j_or_i];
+                contador++;
+            }
+        }
+        public static void imprimirTodosLosBarcos(Jugadores jugador)
+        {
+            Console.WriteLine("Barco de 2 posiciones");
+            imprimirPosicionesBarcos(jugador.barco2);
+            Console.WriteLine("");
+
+            Console.WriteLine("Barco de 3 posiciones");
+            imprimirPosicionesBarcos(jugador.barco3);
+            Console.WriteLine("");
+
+            Console.WriteLine("Barco de 3 posiciones");
+            imprimirPosicionesBarcos(jugador.barco3_2);
+            Console.WriteLine("");
+
+            Console.WriteLine("Barco de 4 posiciones");
+            imprimirPosicionesBarcos(jugador.barco4);
+            Console.WriteLine("");
+
+            Console.WriteLine("Barco de 5 posiciones");
+            imprimirPosicionesBarcos(jugador.barco5);
+            Console.WriteLine("");
+        }
+        public static void imprimirPosicionesBarcos(Array arr)
+        {
+            foreach (string item in arr)
+            {
+                Console.Write("{0} ", item);
+            }
         }
     }
 }

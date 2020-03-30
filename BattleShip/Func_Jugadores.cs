@@ -4,6 +4,7 @@ using System.Text;
 using System.Runtime.Serialization;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Linq;
 
 namespace BattleShip
 {
@@ -64,8 +65,10 @@ namespace BattleShip
                         {
                             if (JugadorEnEspera.tablero[i, j] == " X")
                             {
+                                
                                 JugadorEnEspera.tableroVacio[i, j] = " 0";
                                 Console.Write("Disparo exitoso. Presione cualquier tecla para atacar nuevamente.");
+
                                 Console.ReadKey();
                                 if (JugadorEnTurno == jugador1)
                                 {
@@ -169,5 +172,14 @@ namespace BattleShip
                 Matrices.menu();
             }
         }
+
+        public static void derriboDeBarcos(Jugadores jugadorEnEspera, int i, int j) 
+        {
+            
+
+            
+        }
+
+        
     }
 }
