@@ -8,5 +8,7 @@ namespace BattleShip
     {
         public string nombre { get; set; }
         public string[,] tablero { get; set; }
+        public string[,] tableroVacio { get; set; }
+        public int puntuacionFinal { get; set; }
     }
 }

@@ -6,7 +6,8 @@ namespace BattleShip
 {
     class Matrices
     {
-
+        public static Jugadores Jugador1 { get; set; }
+        public static Jugadores Jugador2 { get; set; }
         //Crea un jugador asignandole un tablero
 
 
@@ -30,7 +31,21 @@ namespace BattleShip
                 switch (opcion) 
                 {
                     case 1:
-                        inicioDelJuego();
+                        iniciandoJugador1();
+                        iniciandoJugador2();
+                        Console.Clear();
+                        Func_Jugadores.atacar(Jugador1, Jugador2);
+                        break;
+
+                    case 2:
+                        Func_Jugadores.mostrarRecord();
+                        Console.ReadKey();
+                        break;
+
+                    default:
+                        Console.WriteLine("Elija dentro de las opciones dadas. Presione cualquier tecla para volver al menu.");
+                        Console.ReadKey();
+                        menu();
                         break;
                 }
             }
@@ -86,22 +101,40 @@ namespace BattleShip
 
             Console.WriteLine("\n");
         }
-        public static void inicioDelJuego()
+        public static void iniciandoJugador1() 
         {
+            Jugador1 = inicioDelJuego("Jugador 1");
+        }
+        public static void iniciandoJugador2()
+        {
+            Jugador2 = inicioDelJuego("Jugador 2");
+        }
+        public static Jugadores inicioDelJuego(string player)
+        {
+            string resp = "";
             Jugadores jugador = new Jugadores();
-
-            Console.Write("Inserte el nombre del jugador 1: ");
-            try
+            do
             {
-                jugador.nombre = Console.ReadLine();
-            }
-            catch (Exception exp)
-            {
-                Console.WriteLine(exp.Message);
-            }
-            jugador.tablero = asignarTablero();
+                Console.Clear();
+                Console.Write("Inserte el nombre del {0}: ", player);
+                try
+                {
+                    jugador.nombre = Console.ReadLine();
+                }
+                catch (Exception exp)
+                {
+                    Console.WriteLine(exp.Message);
+                }
+                jugador.tablero = asignarTablero();
+                jugador.tableroVacio = asignarTablero();
 
-            posicion(jugador);
+                posicion(jugador);
+
+                Console.Write("Ingrese la tecla N si no esta de acuerdo con el posicionamiento: ");
+                resp = Console.ReadLine();
+            } while (resp == "N" || resp == "n");
+
+            return jugador;
         }
         public static void posicion(Jugadores jugador)
         {
@@ -354,6 +387,27 @@ namespace BattleShip
                     jugador.tablero[i, a] = " X";
                 }
             }
+        }
+        public static void imprimirTableroVacio(string[,] tablero) 
+        {
+            int contador = 0;
+
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    if (contador == 10)
+                    {
+                        Console.Write("\n");
+                        contador = 0;
+                    }
+                    Console.Write("{0}", tablero[i, j]);
+                    Console.Write(" | ");
+                    contador++;
+                }
+            }
+
+            Console.WriteLine("\n");
         }
     }
 }
