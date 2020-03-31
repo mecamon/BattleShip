@@ -6,8 +6,8 @@ namespace BattleShip
 {
     class Matrices
     {
-        public static Jugadores Jugador1 { get; set; }
-        public static Jugadores Jugador2 { get; set; }
+        public static Jugadores Jugador1;
+        public static Jugadores Jugador2;
         //Crea un jugador asignandole un tablero
 
 
@@ -42,10 +42,11 @@ namespace BattleShip
                         iniciandoJugador1();
                         iniciandoJugador2();
                         Console.Clear();
-                        Func_Jugadores.atacar(Jugador1, Jugador2);
+                        Func_Jugadores.atacar(ref Jugador1, ref Jugador2);
                         break;
 
                     case 2:
+                        Console.Clear();
                         Func_Jugadores.mostrarRecord();
                         Console.ReadKey();
                         break;
@@ -88,7 +89,7 @@ namespace BattleShip
         }
         public static void imprimirCampo(Jugadores jugador)
         {
-            Console.WriteLine("Tablero de {0}\n", jugador.nombre);
+            Console.WriteLine("\nTablero de {0}\n", jugador.nombre);
 
             int contador = 0;
 
@@ -148,7 +149,7 @@ namespace BattleShip
 
                 posicion(jugador);
 
-                Console.Write("Ingrese la tecla N si no esta de acuerdo con el posicionamiento: ");
+                Console.Write("Presione 'Enter' si está de acuerdo con el posicionamiento o 'N' para cambiarlo: ");
                 resp = Console.ReadLine();
             } while (resp == "N" || resp == "n");
 
@@ -164,7 +165,7 @@ namespace BattleShip
                 imprimirCampo(jugador);
 
                 Console.WriteLine("\n");
-                Console.Write("Donde desea posicionar del barco: ");
+                Console.Write("Ingrese el número donde desea posicionar del barco: ");
                 string barco2 = Console.ReadLine();
 
 
@@ -218,7 +219,7 @@ namespace BattleShip
         }
         public static void orientacionBarco(Jugadores jugador, int i, int j, int capacidadBarco, int arriba_izquierda, int abajo_derecha, int aSumar)
         {
-            Console.WriteLine("Cual es la orientacion del barco de capacidad de {0}?", capacidadBarco);
+            Console.WriteLine("Cuál es la orientación del barco de capacidad de {0}?", capacidadBarco);
             Console.WriteLine(" 1- Arriba\n 2- Abajo\n 3- Izquierda\n 4- Derecha");
             int resp = 0;
 
@@ -260,8 +261,8 @@ namespace BattleShip
         {
             if (i < arriba_izquierda)
             {
-                Console.WriteLine("No hay espacio suficiente hacia arriba para colocar el barco. Elija otra posicion u orientacion: ");
-                Console.WriteLine(" 1- Posicion\n 2- Orientacion");
+                Console.WriteLine("No hay espacio suficiente hacia arriba para colocar el barco. Elija otra posición u orientación: ");
+                Console.WriteLine(" 1- Posición\n 2- Orientación");
                 int resp = Convert.ToInt32(Console.ReadLine());
 
                 switch (resp)
@@ -279,7 +280,10 @@ namespace BattleShip
 
                     default:
                         Console.WriteLine("Elija dentro de las opciones dadas.");
+                        Console.ReadKey();
                         Console.Clear();
+                        imprimirCampo(jugador);
+                        orientacionBarco(jugador, i, j, capacidadBarco, arriba_izquierda, abajo_derecha, aSumar);
                         break;
                 }
                 Console.ReadKey();
@@ -288,15 +292,39 @@ namespace BattleShip
             {
                 int contador = 1;
 
-                llenadoDeBarcos1(capacidadBarco, i, j, jugador);
+                if (jugador.tablero[i, j] != " X")
+                {
+                    llenadoDeBarcos1(capacidadBarco, i, j, jugador);
 
-                jugador.tablero[i, j] = " X";
+                    jugador.tablero[i, j] = " X";
+                }
+                else
+                {
+                    Console.WriteLine("Hay un barco estorbando en esa posicion.Presione cualquier tecla para elijir posicion.");
+                    Console.ReadKey();
+                    Console.Clear();
+                    posicion(jugador);
+                }
+
+
 
                 for (int a = i - aSumar; a < i; a++)
                 {
-                    llenadoDeBarcos2(ref contador, capacidadBarco, a, j, jugador);
 
-                    jugador.tablero[a, j] = " X";
+                    if (jugador.tablero[a, j] != " X")
+                    {
+                        llenadoDeBarcos2(ref contador, capacidadBarco, a, j, jugador);
+
+                        jugador.tablero[a, j] = " X";
+                    }
+                    else 
+                    {
+                        Console.WriteLine("Hay un barco estorbando en esa posicion.Presione cualquier tecla para elijir posicion.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        posicion(jugador);
+                    }
+                    
                 }
             }
         }
@@ -304,8 +332,8 @@ namespace BattleShip
         {
             if (i > abajo_derecha)
             {
-                Console.WriteLine("No hay espacio suficiente hacia arriba para colocar el barco. Elija otra posicion u orientacion: ");
-                Console.WriteLine(" 1- Posicion\n 2- Orientacion");
+                Console.WriteLine("No hay espacio suficiente hacia arriba para colocar el barco. Elija otra posición u orientación: ");
+                Console.WriteLine(" 1- Posición\n 2- Orientación");
                 int resp = Convert.ToInt32(Console.ReadLine());
 
                 switch (resp)
@@ -332,16 +360,37 @@ namespace BattleShip
             {
                 int contador = 1;
 
-                llenadoDeBarcos1(capacidadBarco, i, j, jugador);
+                if (jugador.tablero[i, j] != " X") 
+                {
+                    llenadoDeBarcos1(capacidadBarco, i, j, jugador);
 
-                jugador.tablero[i, j] = " X";
+                    jugador.tablero[i, j] = " X";
+                }
+                else
+                {
+                    Console.WriteLine("Hay un barco estorbando en esa posicion.Presione cualquier tecla para elijir posicion.");
+                    Console.ReadKey();
+                    Console.Clear();
+                    posicion(jugador);
+                }
 
 
                 for (int a = i + aSumar; a > i; a--)
                 {
-                    llenadoDeBarcos2(ref contador, capacidadBarco, a, j, jugador);
+                    if (jugador.tablero[a, j] != " X") 
+                    {
+                        llenadoDeBarcos2(ref contador, capacidadBarco, a, j, jugador);
 
-                    jugador.tablero[a, j] = " X";
+                        jugador.tablero[a, j] = " X";
+                    }
+                    else
+                    {
+                        Console.WriteLine("Hay un barco estorbando en esa posicion.Presione cualquier tecla para elijir posicion.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        posicion(jugador);
+                    }
+
                 }
             }
         }
@@ -349,8 +398,8 @@ namespace BattleShip
         {
             if (j > abajo_derecha)
             {
-                Console.WriteLine("No hay espacio suficiente hacia arriba para colocar el barco. Elija otra posicion u orientacion: ");
-                Console.WriteLine(" 1- Posicion\n 2- Orientacion");
+                Console.WriteLine("No hay espacio suficiente hacia arriba para colocar el barco. Elija otra posición u orientación: ");
+                Console.WriteLine(" 1- Posición\n 2- Orientación");
                 int resp = Convert.ToInt32(Console.ReadLine());
 
                 switch (resp)
@@ -377,15 +426,38 @@ namespace BattleShip
             {
                 int contador = 1;
 
-                llenadoDeBarcos1(capacidadBarco, i, j, jugador);
+                if (jugador.tablero[i, j] != " X") 
+                {
+                    llenadoDeBarcos1(capacidadBarco, i, j, jugador);
 
-                jugador.tablero[i, j] = " X";
+                    jugador.tablero[i, j] = " X";
+                }
+                else
+                {
+                    Console.WriteLine("Hay un barco estorbando en esa posicion.Presione cualquier tecla para elijir posicion.");
+                    Console.ReadKey();
+                    Console.Clear();
+                    posicion(jugador);
+                }
+
 
                 for (int a = j + aSumar; a > j; a--)
                 {
-                    llenadoDeBarcos2(ref contador, capacidadBarco, a, j, jugador);
+                    if (jugador.tablero[i, a] != " X") 
+                    {
+                        llenadoDeBarcos2(ref contador, capacidadBarco, i, a, jugador);
 
-                    jugador.tablero[i, a] = " X";
+                        jugador.tablero[i, a] = " X";
+                    }
+                    else
+                    {
+                        Console.WriteLine("Hay un barco estorbando en esa posicion.Presione cualquier tecla para elijir posicion.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        posicion(jugador);
+                    }
+
+
                 }
             }
         }
@@ -393,8 +465,8 @@ namespace BattleShip
         {
             if (j < arriba_izquierda)
             {
-                Console.WriteLine("No hay espacio suficiente hacia arriba para colocar el barco. Elija otra posicion u orientacion: ");
-                Console.WriteLine(" 1- Posicion\n 2- Orientacion");
+                Console.WriteLine("No hay espacio suficiente hacia arriba para colocar el barco. Elija otra posición u orientación: ");
+                Console.WriteLine(" 1- Posición\n 2- Orientación");
                 int resp = Convert.ToInt32(Console.ReadLine());
 
                 switch (resp)
@@ -421,15 +493,37 @@ namespace BattleShip
             {
                 int contador = 1;
 
-                llenadoDeBarcos1(capacidadBarco, i, j, jugador);
+                if (jugador.tablero[i, j] != " X") 
+                {
+                    llenadoDeBarcos1(capacidadBarco, i, j, jugador);
 
-                jugador.tablero[i, j] = " X";
+                    jugador.tablero[i, j] = " X";
+                }
+                else
+                {
+                    Console.WriteLine("Hay un barco estorbando en esa posición.Presione cualquier tecla para elijir posición.");
+                    Console.ReadKey();
+                    Console.Clear();
+                    posicion(jugador);
+                }
+
 
                 for (int a = j - aSumar; a < j; a++)
                 {
-                    llenadoDeBarcos2(ref contador, capacidadBarco, a, j, jugador);
+                    if (jugador.tablero[i, a] != " X") 
+                    {
+                        llenadoDeBarcos2(ref contador, capacidadBarco, i, a, jugador);
 
-                    jugador.tablero[i, a] = " X";
+                        jugador.tablero[i, a] = " X";
+                    }
+                    else
+                    {
+                        Console.WriteLine("Hay un barco estorbando en esa posición.Presione cualquier tecla para elegir posición.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        posicion(jugador);
+                    }
+
                 }
             }
         }
@@ -515,28 +609,32 @@ namespace BattleShip
         }
         public static void imprimirTodosLosBarcos(Jugadores jugador)
         {
-            Console.WriteLine("Barco de 2 posiciones");
+            Console.WriteLine("{0}: ", jugador.nombre);
+
+            Console.WriteLine("Posiciones ocupadas por los barcos: ");
+            Console.WriteLine("Barco de 2 impactos");
             imprimirPosicionesBarcos(jugador.barco2);
             Console.WriteLine("");
 
-            Console.WriteLine("Barco de 3 posiciones");
+            Console.WriteLine("Barco de 3 impactos");
             imprimirPosicionesBarcos(jugador.barco3);
             Console.WriteLine("");
 
-            Console.WriteLine("Barco de 3 posiciones");
+            Console.WriteLine("Barco de 3 impactos");
             imprimirPosicionesBarcos(jugador.barco3_2);
             Console.WriteLine("");
 
-            Console.WriteLine("Barco de 4 posiciones");
+            Console.WriteLine("Barco de 4 impactos");
             imprimirPosicionesBarcos(jugador.barco4);
             Console.WriteLine("");
 
-            Console.WriteLine("Barco de 5 posiciones");
+            Console.WriteLine("Barco de 5 impactos");
             imprimirPosicionesBarcos(jugador.barco5);
             Console.WriteLine("");
         }
         public static void imprimirPosicionesBarcos(Array arr)
         {
+            
             foreach (string item in arr)
             {
                 Console.Write("{0} ", item);
