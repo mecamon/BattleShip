@@ -174,12 +174,13 @@ namespace BattleShip
                 foreach (Resultados item in resultadosJuego) 
                 {
                     Console.WriteLine("Resultados del juego #{0}\n", resultadosJuego.IndexOf(item)+1);
+
                     Console.Write("Ganador: {0}.\t", item.nombreGanador);
                     Console.Write("Puntuación: {0} barcos derribados.", item.puntuacionGanador);
                     Console.WriteLine("");
 
                     Console.Write("Perdedor: {0}.\t", item.nombrePerdedor);
-                    Console.Write("Puntuación: {0} barcos derribados.", item.nombrePerdedor);
+                    Console.Write("Puntuación: {0} barcos derribados.", item.puntuacionPerdedor);
 
                     Console.WriteLine("\n");
                 }

@@ -150,6 +150,7 @@ namespace BattleShip
                 jugador.barco4 = new string[4];
                 jugador.barco5 = new string[5];
 
+                Console.Clear();
                 jugador.tablero = asignarTablero();
                 jugador.tableroVacio = asignarTablero();
 
@@ -218,8 +219,6 @@ namespace BattleShip
                 contador++;
                 Console.Clear();
             }
-
-            imprimirTodosLosBarcos(jugador);
 
             imprimirCampo(jugador);
 
@@ -624,6 +623,7 @@ namespace BattleShip
             }
         }
 
+        //Estos son métodos de prueba
         public static void imprimirTodosLosBarcos(Jugadores jugador)
         {
             Console.WriteLine("{0}: ", jugador.nombre);
