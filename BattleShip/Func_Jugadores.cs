@@ -149,8 +149,9 @@ namespace BattleShip
             Stream stream = new FileStream("Resultados.dat", FileMode.Create, FileAccess.Write, FileShare.None);
             formatter.Serialize(stream, Lista);
             stream.Close();
-        } 
+        }
 
+        //Deserializador
         public static object deserializarResultados()
         {
             object lista;
@@ -161,8 +162,9 @@ namespace BattleShip
             stream.Close();
 
             return lista;
-        } //Deserializador
+        }
 
+        //Para imprimir el record de los juegos previos
         public static void mostrarRecord() 
         {
             if (File.Exists("Resultados.dat"))
@@ -189,8 +191,9 @@ namespace BattleShip
                 Console.Clear();
                 Matrices.menu();
             }
-        } //Para imprimir el record de los juegos previos
+        }
 
+        //Para ir agregando daño a los barcos
         public static void derriboDeBarcos(ref Jugadores JugadorEnEspera, int i, int j, string posicionAtacada) 
         {
             for (int k = 0; k < JugadorEnEspera.barco2.Length; k++) 
@@ -234,6 +237,7 @@ namespace BattleShip
             }
         }
 
+        //Para hacer el calculo final de los barcos hundidos
         public static void calculandoPuntos(Jugadores jugador1, Jugadores jugador2) 
         {
             //Calculando puntos del jugador 2

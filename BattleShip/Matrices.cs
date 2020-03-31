@@ -20,6 +20,7 @@ namespace BattleShip
             BARCOS_DE_CINCO = 4,
         }
 
+        //Enum con número impactos de cada barco
         public enum capacidadBarcos
         {
             CAPACIDAD_BARCO2 = 2,
@@ -28,6 +29,7 @@ namespace BattleShip
             CAPACIDAD_BARCO5,
         }
 
+        //Menú principal
         public static void menu()
         {
             Console.WriteLine("Bienvenido a BattleShip. Que funcion desea realizar: \n");
@@ -63,6 +65,8 @@ namespace BattleShip
                 Console.WriteLine(exp.Message);
             }
         }
+
+        //Para asginar un tablero vacio a cada jugador
         public static string[,] asignarTablero()
         {
             string[,] nombreJugador = new string[10, 10];
@@ -118,6 +122,8 @@ namespace BattleShip
         {
             Jugador2 = inicioDelJuego("Jugador 2");
         }
+
+        //Creador de jugadores
         public static Jugadores inicioDelJuego(string player)
         {
             string resp = "";
@@ -155,6 +161,8 @@ namespace BattleShip
 
             return jugador;
         }
+
+        //Para posicinamiento inicial de los barcos. Se apoya mucho en el método de orientación de barcos
         public static void posicion(Jugadores jugador)
         {
             int contador = 1;
@@ -217,6 +225,8 @@ namespace BattleShip
 
             Console.ReadKey();
         }
+
+        //Para decidir hacia qué dirección desean colocar el barco una vez hecho el posicionamiento inicial
         public static void orientacionBarco(Jugadores jugador, int i, int j, int capacidadBarco, int arriba_izquierda, int abajo_derecha, int aSumar)
         {
             Console.WriteLine("Cuál es la orientación del barco de capacidad de {0}?", capacidadBarco);
@@ -257,6 +267,8 @@ namespace BattleShip
                 Console.WriteLine(exp.Message);
             }
         }
+
+        //Métodos para validar si hay espacio suficiente hacia donde se quiere colocar el barco
         public static void validacionArriba(Jugadores jugador, int i, int j, int arriba_izquierda, int abajo_derecha, int capacidadBarco, int aSumar)
         {
             if (i < arriba_izquierda)
@@ -527,6 +539,8 @@ namespace BattleShip
                 }
             }
         }
+
+        //Para imprimir un tablero nuevo que no revele la posición del jugador enemigo al atacante
         public static void imprimirTableroVacio(string[,] tablero)
         {
             int contador = 0;
@@ -548,6 +562,8 @@ namespace BattleShip
 
             Console.WriteLine("\n");
         }
+
+        //Para asignar los números de las posiciones a los en el tablero a los barcos
         public static void llenadoDeBarcos1(int capacidadBarco, int a, int j_or_i, Jugadores jugador)
         {
             if (capacidadBarco == (int)capacidadBarcos.CAPACIDAD_BARCO2)
@@ -607,6 +623,7 @@ namespace BattleShip
                 contador++;
             }
         }
+
         public static void imprimirTodosLosBarcos(Jugadores jugador)
         {
             Console.WriteLine("{0}: ", jugador.nombre);
